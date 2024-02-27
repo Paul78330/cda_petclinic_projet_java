@@ -1,21 +1,30 @@
+# Spécifie la version de Docker Compose
 version: '3'
 
+# Définit les services qui composent votre application
 services:
+  # Service pour le serveur de configuration
   config-server:
+    # Image Docker à utiliser
     image: springcommunity/spring-petclinic-config-server
+    # Nom du conteneur
     container_name: config-server
+    # Ressources à allouer au conteneur
     deploy:
       resources:
         limits:
           memory: 512M
+    # Vérification de l'état de santé du conteneur
     healthcheck:
       test: ["CMD", "curl", "-I", "http://config-server:8888"]
       interval: 5s
       timeout: 5s
       retries: 10
+    # Ports à exposer
     ports:
      - 8888:8888
 
+  # Service pour le serveur de découverte
   discovery-server:
     image: springcommunity/spring-petclinic-discovery-server
     container_name: discovery-server
@@ -28,12 +37,14 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    # Dépendances de ce service
     depends_on:
       config-server:
         condition: service_healthy
     ports:
      - 8761:8761
 
+  # Service pour le service des clients
   customers-service:
     image: springcommunity/spring-petclinic-customers-service
     container_name: customers-service
@@ -49,6 +60,7 @@ services:
     ports:
     - 8081:8081
 
+  # Service pour le service des visites
   visits-service:
     image: springcommunity/spring-petclinic-visits-service
     container_name: visits-service
@@ -64,6 +76,7 @@ services:
     ports:
      - 8082:8082
 
+  # Service pour le service des vétérinaires
   vets-service:
     image: springcommunity/spring-petclinic-vets-service
     container_name: vets-service
@@ -79,6 +92,7 @@ services:
     ports:
      - 8083:8083
 
+  # Service pour le serveur d'API Gateway
   api-gateway:
     image: springcommunity/spring-petclinic-api-gateway
     container_name: api-gateway
@@ -94,6 +108,7 @@ services:
     ports:
      - 8080:8080
 
+  # Service pour le serveur de traçage
   tracing-server:
     image: openzipkin/zipkin
     container_name: tracing-server
@@ -101,11 +116,13 @@ services:
       resources:
         limits:
           memory: 512M
+    # Variables d'environnement pour le conteneur
     environment:
     - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
     ports:
      - 9411:9411
 
+  # Service pour le serveur d'administration
   admin-server:
     image: springcommunity/spring-petclinic-admin-server
     container_name: admin-server
@@ -121,8 +138,7 @@ services:
     ports:
      - 9090:9090
 
-  ## Grafana / Prometheus
-
+  # Service pour le serveur Grafana
   grafana-server:
     build: ./docker/grafana
     container_name: grafana-server
@@ -133,6 +149,7 @@ services:
     ports:
     - 3000:3000
 
+  # Service pour le serveur Prometheus
   prometheus-server:
     build: ./docker/prometheus
     container_name: prometheus-server
