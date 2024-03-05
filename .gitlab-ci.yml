@@ -1,4 +1,5 @@
 stages:
+ - build
  - docker_build
  - build_maven
  - test 
@@ -28,6 +29,14 @@ cache:
     - .m2/repository
   key: "$CI_JOB_NAME"
   policy: pull-push
+
+debug_job:
+  stage: build
+  script:
+    - echo "CI_JOB_NAME is $CI_JOB_NAME"
+    - echo "CI_PROJECT_DIR is $CI_PROJECT_DIR"
+    - echo "DOCKER_USERNAME"
+  image: eclipse-temurin:17-jdk
 
 maven_build_job:
   stage: build_maven
