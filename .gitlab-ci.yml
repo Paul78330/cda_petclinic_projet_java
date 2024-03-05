@@ -41,6 +41,8 @@ debug_job:
 maven_build_job:
   stage: build_maven
   image: $DOCKER_REGISTRY
+  services:
+    - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375
   before_script:
