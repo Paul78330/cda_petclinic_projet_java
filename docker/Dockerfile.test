@@ -1,0 +1,21 @@
+#Utilise une image de base avec Maven et OpenJDK 17 pour construire l'application
+FROM maven:3.8.4-openjdk-17-slim as builder
+
+#Installer Docker afin que le conteneur puisse construire des images Dokcer
+USER root
+RUN apt-get update -qq && \
+  apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl gnupg lsb-release && \
+  curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
+  echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list && \
+  apt-get update -qq && \
+  apt-get install -y --no-install-recommends docker-ce docker-ce-cli containerd.io && \
+  apt-get clean
+
+#Définir le répertoire de travail dans le conteneur
+WORKDIR /application
+
+#Copier le fichier pom.xml et les sources dans le conteneur
+COPY . .
+
+#Construire l'application avec Maven
+RUN mvn clean install
