@@ -13,6 +13,7 @@
         <groupId>org.springframework.samples</groupId>
         <artifactId>spring-petclinic-microservices</artifactId>
         <version>3.2.0</version>
+        <relativePath>../pom.xml</relativePath> <!-- ajoutez cette ligne -->
     </parent>
 
     <properties>
@@ -48,13 +49,28 @@
             <version>${spring-boot-admin.version}</version>
         </dependency>
 
-        <!-- Third-party librairies -->
+        <!-- Third-party libraries -->
         <dependency>
             <groupId>org.jolokia</groupId>
             <artifactId>jolokia-core</artifactId>
         </dependency>
 
+        <!-- Ajoutez cette dépendance pour JUnit Jupiter API-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Ajoutez cette dépendance pour Spring Boot Starter Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
     </dependencies>
+
 
     <profiles>
         <profile>
