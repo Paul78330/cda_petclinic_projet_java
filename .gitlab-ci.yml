@@ -8,9 +8,9 @@ variables:
   DOCKER_DRIVER: overlay2 # Utilise le driver overlay2 pour Docker
   #Cette ligne définit la variable d'environnement DOCKER_DRIVER à overlay2. overlay2 est un type de stockage Docker qui est rapide et efficace. Docker utilise différents pilotes de stockage pour gérer les images et les conteneurs de Docker sur votre système Docker. overlay2 est généralement recommandé par Docker pour sa performance.
 
-  # DOCKER_USERNAME: $DOCKER_USERNAME
-  # DOCKER_PASSWORD: $DOCKER_PASSWORD
-  DOCKER_REGISTRY: paul94400/dockerwjava
+  DOCKER_USERNAME: $DOCKER_USERNAME
+  DOCKER_PASSWORD: $DOCKER_PASSWORD
+  DOCKER_REGISTRY: paul94400/cda_projet_demo_petclinic
 
 #Construire une image à partir du fichier Dockerfile.test
 docker_build_job:
@@ -35,7 +35,7 @@ debug_job:
   script:
     - echo "CI_JOB_NAME is $CI_JOB_NAME"
     - echo "CI_PROJECT_DIR is $CI_PROJECT_DIR"
-    - echo "DOCKER_USERNAME"
+    - echo "$DOCKER_USERNAME"
   image: eclipse-temurin:17-jdk
 
 maven_build_job:
