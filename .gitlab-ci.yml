@@ -8,8 +8,8 @@ variables:
   DOCKER_DRIVER: overlay2 # Utilise le driver overlay2 pour Docker
   #Cette ligne définit la variable d'environnement DOCKER_DRIVER à overlay2. overlay2 est un type de stockage Docker qui est rapide et efficace. Docker utilise différents pilotes de stockage pour gérer les images et les conteneurs de Docker sur votre système Docker. overlay2 est généralement recommandé par Docker pour sa performance.
 
-  DOCKER_USERNAME: $DOCKER_USERNAME
-  DOCKER_PASSWORD: $DOCKER_PASSWORD
+  DOCKER_USERNAME: "paul94400"
+  DOCKER_PASSWORD: "Heden090313@2023"
   DOCKER_REGISTRY: paul94400/cda_projet_demo_petclinic
 
 #Construire une image à partir du fichier Dockerfile.test
