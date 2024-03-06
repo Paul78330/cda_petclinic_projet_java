@@ -169,3 +169,13 @@ services:
       - config-server
       - discovery-server
     command: mvn test
+
+  test_unitaire_customers_service:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.customers
+    container_name: test_unitaire_customers_service
+    depends_on:
+      - config-server
+      - discovery-server
+    command: mvn test

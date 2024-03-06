@@ -97,3 +97,17 @@ unit_admin_test_job:
     - docker-compose up test_unitaire_admin_server
   dependencies:
     - maven_build_job
+
+unit_customer_test_job:
+  stage: test
+  image: $DOCKER_REGISTRY
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+  before_script:
+    - apt-get update && apt-get install -y docker-compose
+  script:
+    - docker-compose up test_unitaire_customer_server
+  dependencies:
+    - maven_build_job
