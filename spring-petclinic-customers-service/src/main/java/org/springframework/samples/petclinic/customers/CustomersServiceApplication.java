@@ -30,3 +30,5 @@ public class CustomersServiceApplication {
 		SpringApplication.run(CustomersServiceApplication.class, args);
 	}
 }
+
+// En résumé, cette classe démarre l'application Spring Boot et active le client de découverte pour permettre à l'application de s'enregistrer avec un service de découverte.
