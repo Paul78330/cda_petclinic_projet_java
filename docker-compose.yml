@@ -159,3 +159,13 @@ services:
       - config-server
       - discovery-server
     command: mvn test
+
+  test_unitaire_admin_server:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.admin
+      container_name: test_unitaire_admin_server
+    depends_on:
+      - config-server
+      - discovery-server
+    command: mvn test

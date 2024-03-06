@@ -83,3 +83,17 @@ test_integration:
     - docker-compose up --build test_integration
   dependencies:
     - maven_build_job
+
+unit_admin_test_job:
+  stage: test
+  image: $DOCKER_REGISTRY
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+  before_script:
+    - apt-get update && apt-get install -y docker-compose
+  script:
+    - docker-compose up --build
+  dependencies:
+    - maven_build_job
