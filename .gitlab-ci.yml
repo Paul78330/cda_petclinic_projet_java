@@ -108,6 +108,6 @@ unit_customer_test_job:
   before_script:
     - apt-get update && apt-get install -y docker-compose
   script:
-    - docker-compose up test_unitaire_customer_server
+    - docker-compose up test_unitaire_customers_server
   dependencies:
     - maven_build_job
