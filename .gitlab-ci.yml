@@ -52,7 +52,7 @@ maven_build_job:
   - apt-get update && apt-get install -y docker-compose
   script:
     - mkdir -p ./target
-    - docker-compose build -d
+    - docker-compose build
   dependencies:
     - docker_build_job
   artifacts:
@@ -133,7 +133,9 @@ package_job:
   
   script:
     - 'echo "Listing target directory contents"'
-    - 'ls -lah target/'
+    - 'ls -lah'
+    - 'echo "Checking if JAR file exists"'
+    - 'ls -lah ${ARTIFACT_NAME}.jar'
     - 'echo "Bulding Docker image"'
     - 'docker build --build-arg ARTIFACT_NAME=${ARTIFACT_NAME} -f docker/Dockerfile -t demo_petclinic_project:$CI_COMMIT_SHORT_SHA .'
     # Dans votre cas, le code demo_project:$CI_COMMIT_SHORT_SHA . est utilisé pour construire une image Docker pour votre projet et la tagger avec le hash court du commit actuel. Cette image Docker peut ensuite être distribuée et déployée sur différents environnements.
