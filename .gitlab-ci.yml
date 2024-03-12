@@ -52,7 +52,7 @@ maven_build_job:
   - apt-get update && apt-get install -y docker-compose
   script:
     - docker-compose run --rm test_integration mvn package -DskipTests=true
-    - docker cp test_integration:/application/target/ target/
+    - docker target/*.jar artifacts/
   dependencies:
     - docker_build_job
   artifacts:

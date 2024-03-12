@@ -4,11 +4,14 @@ FROM eclipse-temurin:17 as builder
 # Définissez le répertoire de travail dans le conteneur
 WORKDIR application
 
+# Créez le dossier artifacts
+RUN mkdir artifacts
+
 # Définissez une variable d'argument pour le nom de l'artefact
 ARG ARTIFACT_NAME
 
 # Copiez le fichier jar de l'artefact dans le conteneur
-COPY target/${ARTIFACT_NAME}.jar app.jar
+COPY ${ARTIFACT_NAME}.jar application.jar
 
 # Exécutez la commande java pour extraire les couches du jar
 RUN java -Djarmode=layertools -jar application.jar extract
