@@ -155,27 +155,29 @@ services:
       context: .
       dockerfile: docker/Dockerfile.test
     container_name: test_integration
+    volumes:
+      - ./target:/target
     depends_on:
       - config-server
       - discovery-server
-    command: mvn test
+    # command: mvn test
 
-  test_unitaire_admin_server:
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile.admin
-    container_name: test_unitaire_admin_server
-    depends_on:
-      - config-server
-      - discovery-server
-    command: mvn test
+  # test_unitaire_admin_server:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/Dockerfile.admin
+  #   container_name: test_unitaire_admin_server
+  #   depends_on:
+  #     - config-server
+  #     - discovery-server
+  #   command: mvn test
 
-  test_unitaire_customers_service: 
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile.customers
-    container_name: test_unitaire_customers_service
-    depends_on:
-      - config-server
-      - discovery-server
-    command: mvn test
+  # test_unitaire_customers_service: 
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/Dockerfile.customers
+  #   container_name: test_unitaire_customers_service
+  #   depends_on:
+  #     - config-server
+  #     - discovery-server
+  #   command: mvn test

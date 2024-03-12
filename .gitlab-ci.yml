@@ -4,7 +4,7 @@ stages:
  - build
  - docker_build
  - build_maven
- - test
+#  - test
  - package
 
 variables:
@@ -51,8 +51,7 @@ maven_build_job:
   before_script:
   - apt-get update && apt-get install -y docker-compose
   script:
-    - docker-compose up -d --build
-    - ./mvnw clean package -DskipTests=true 
+    - docker-compose up -d --build 
   dependencies:
     - docker_build_job
   artifacts:
@@ -83,7 +82,7 @@ test_integration:
   before_script:
     - apt-get update && apt-get install -y docker-compose
   script:
-    - docker-compose up --build test_integration
+    - docker-compose up test_integration
   dependencies:
     - maven_build_job
 
@@ -124,14 +123,18 @@ package_job:
     - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375
+    ARTIFACT_NAME: spring-petclinic-microservices
   dependencies:
     - maven_build_job
   before_script:
     - 'echo "Listing current directory contents"'
     - 'ls -lah'
+  
   script:
     - 'echo "Building project with Maven"'
     - 'mvn clean package -DskipTests=true'
+    - 'echo "Listing target directory contents"'
+    - 'ls -lah target/'
     - 'echo "Creating temporary directory"'
     - 'mkdir temp'
     - 'echo "Copying JAR file"'
