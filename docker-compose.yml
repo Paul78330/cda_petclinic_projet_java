@@ -156,7 +156,7 @@ services:
       dockerfile: docker/Dockerfile.test
     container_name: test_integration
     volumes:
-      - ./target:/application/target
+      - ./target:/target
     depends_on:
       - config-server
       - discovery-server
