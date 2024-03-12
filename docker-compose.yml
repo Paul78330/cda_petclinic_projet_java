@@ -170,7 +170,7 @@ services:
       - discovery-server
     command: mvn test
 
-  test_unitaire_customers_service:
+  test_unitaire_customers_service: 
     build:
       context: .
       dockerfile: ./docker/Dockerfile.customers
