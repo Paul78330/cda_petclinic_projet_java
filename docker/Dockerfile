@@ -8,7 +8,7 @@ WORKDIR application
 ARG ARTIFACT_NAME
 
 # Copiez le fichier jar de l'artefact dans le conteneur
-COPY temp/${ARTIFACT_NAME}.jar application.jar
+COPY target/${ARTIFACT_NAME}.jar app.jar
 
 # Exécutez la commande java pour extraire les couches du jar
 RUN java -Djarmode=layertools -jar application.jar extract
