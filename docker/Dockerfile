@@ -4,9 +4,6 @@ FROM eclipse-temurin:17 as builder
 # Définissez le répertoire de travail dans le conteneur
 WORKDIR application
 
-# Créez le dossier artifacts
-RUN mkdir artifacts
-
 # Définissez une variable d'argument pour le nom de l'artefact
 ARG ARTIFACT_NAME
 
