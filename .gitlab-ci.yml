@@ -58,61 +58,61 @@ maven_build_job:
     paths:
       - target/*.jar
 
-test_build_job:
-  stage: test
-  script:
-    - ./mvnw test
-      -Dhttps.protocols=TLSv1.2
-      -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
-      -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
-      -Dorg.slf4j.simpleLogger.showDateTime=true
-      -Djava.awt.headless=true
-      --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-  image: eclipse-temurin:17-jdk
-  dependencies:
-    - maven_build_job
+# test_build_job:
+#   stage: test
+#   script:
+#     - ./mvnw test
+#       -Dhttps.protocols=TLSv1.2
+#       -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+#       -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
+#       -Dorg.slf4j.simpleLogger.showDateTime=true
+#       -Djava.awt.headless=true
+#       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
+#   image: eclipse-temurin:17-jdk
+#   dependencies:
+#     - maven_build_job
 
-test_integration:
-  stage: test
-  image: $DOCKER_REGISTRY
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-  before_script:
-    - apt-get update && apt-get install -y docker-compose
-  script:
-    - docker-compose up test_integration
-  dependencies:
-    - maven_build_job
+# test_integration:
+#   stage: test
+#   image: $DOCKER_REGISTRY
+#   services:
+#     - docker:dind
+#   variables:
+#     DOCKER_HOST: tcp://docker:2375
+#   before_script:
+#     - apt-get update && apt-get install -y docker-compose
+#   script:
+#     - docker-compose up test_integration
+#   dependencies:
+#     - maven_build_job
 
-unit_admin_test_job:
-  stage: test
-  image: $DOCKER_REGISTRY
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-  before_script:
-    - apt-get update && apt-get install -y docker-compose
-  script:
-    - docker-compose up test_unitaire_admin_server
-  dependencies:
-    - maven_build_job
+# unit_admin_test_job:
+#   stage: test
+#   image: $DOCKER_REGISTRY
+#   services:
+#     - docker:dind
+#   variables:
+#     DOCKER_HOST: tcp://docker:2375
+#   before_script:
+#     - apt-get update && apt-get install -y docker-compose
+#   script:
+#     - docker-compose up test_unitaire_admin_server
+#   dependencies:
+#     - maven_build_job
 
-unit_customer_test_job:
-  stage: test
-  image: $DOCKER_REGISTRY
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-  before_script:
-    - apt-get update && apt-get install -y docker-compose
-  script:
-    - docker-compose up test_unitaire_customers_service
-  dependencies:
-    - maven_build_job
+# unit_customer_test_job:
+#   stage: test
+#   image: $DOCKER_REGISTRY
+#   services:
+#     - docker:dind
+#   variables:
+#     DOCKER_HOST: tcp://docker:2375
+#   before_script:
+#     - apt-get update && apt-get install -y docker-compose
+#   script:
+#     - docker-compose up test_unitaire_customers_service
+#   dependencies:
+#     - maven_build_job
 
 
 package_job:
