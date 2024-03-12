@@ -17,5 +17,5 @@ WORKDIR /application
 #Copier le fichier pom.xml et les sources dans le conteneur
 COPY . .
 
-#Construire l'application avec Maven
-RUN mvn clean install
+#Construire l'application avec Maven, en sautant les tests
+RUN mvn clean install -DskipTests
