@@ -1,8 +1,11 @@
+image: docker:latest
+
 stages:
  - build
  - docker_build
  - build_maven
- - test 
+ - test
+ - package
 
 variables:
   DOCKER_DRIVER: overlay2 # Utilise le driver overlay2 pour Docker
@@ -111,3 +114,30 @@ unit_customer_test_job:
     - docker-compose up test_unitaire_customers_server
   dependencies:
     - maven_build_job
+
+
+package_job:
+#Le stage package est généralement utilisé pour empaqueter le code source en un format distribuable. Par exemple, dans un projet Java, cela pourrait signifier la création d'un fichier JAR ou WAR. Dans un projet Node.js, cela pourrait signifier la création d'un paquet npm. Dans le contexte de votre fichier .gitlab-ci.yml, le stage package est utilisé pour construire une image Docker de votre application.
+  stage: package
+  image: maven:latest
+  services:
+    - docker:dind
+  dependencies:
+    - maven_build_job
+  before_script:
+    - 'echo "Listing current directory contents"'
+    - 'ls -lah'
+  script:
+    - 'echo "Building project with Maven"'
+    - 'mvn clean package -DskipTests=true'
+    - 'echo "Bulding Docker image"'
+    - 'docker build -f docker/Dockerfile -t demo_petclinic_project:$CI_COMMIT_SHORT_SHA .'
+    # Dans votre cas, le code demo_project:$CI_COMMIT_SHORT_SHA . est utilisé pour construire une image Docker pour votre projet et la tagger avec le hash court du commit actuel. Cette image Docker peut ensuite être distribuée et déployée sur différents environnements.
+
+  artifacts:
+      paths:
+        - target/*.jar
+  only:
+    - main
+      
+    
