@@ -7,6 +7,7 @@ stages:
  - test
  - package
  - quality
+ - deploy
 
 variables:
   DOCKER_DRIVER: overlay2 # Utilise le driver overlay2 pour Docker
@@ -135,7 +136,7 @@ package_admin_server_job: # Nom du job
     - maven_build_job # Ce job dépend du job maven_build_job
   script:
     - 'echo "Building Docker image for admin server"'
-    - 'ls lah'
+    - 'ls -lah'
     - 'docker build --build-arg ARTIFACT_NAME=${ARTIFACT_NAME} -f docker/Dockerfile -t $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA .'
     - 'docker push $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA'
   only:
@@ -160,3 +161,23 @@ quality_job_admin_server:
     - maven_build_job # Ce job dépend du job maven_build_job
   only:
     - main # Ce job ne s'exécute que pour les commits sur la branche main
+
+
+deploy_staging:
+  stage: deploy
+  image: $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+  before_script:
+    - apt-get update && apt-get install -y docker-compose
+  script:
+    - docker-compose -f docker-compose-staging.yml up -d build # Déploie l'application sur l'environnement de staging
+  environment:
+    name: staging #Nom de l'environnement
+  dependencies: # Dépendances du job
+    - quality
+    - docker_build_job
+  only:
+    - main

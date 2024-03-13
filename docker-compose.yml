@@ -186,4 +186,4 @@ services:
     depends_on: #les services dont dépend le conteneur
     - config-server
     - discovery-server
-    command: mvn verify -PbuildDocker #commande à exécuter
+    command: mvn verify -PbuildDocker #commande à exécuter dans un conteneur
