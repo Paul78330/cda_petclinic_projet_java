@@ -130,7 +130,7 @@ package_admin_server_job:
     - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375
-    ARTIFACT_NAME: spring-petclinic-admin-server
+    ARTIFACT_NAME: spring-petclinic-admin-server-3.2.0
   dependencies:
     - maven_build_job
   script:
