@@ -130,11 +130,12 @@ package_admin_server_job:
     - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375
-    ARTIFACT_NAME: spring-petclinic-admin-server-3.2.0
+    ARTIFACT_NAME: spring-petclinic-admin-server
   dependencies:
     - maven_build_job
   script:
     - 'echo "Building Docker image for admin server"'
+    - ls lah
     - 'docker build --build-arg ARTIFACT_NAME=${ARTIFACT_NAME} -f docker/Dockerfile -t $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA .'
     - 'docker push $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA'
   only:
