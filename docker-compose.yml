@@ -155,12 +155,10 @@ services:
       context: .
       dockerfile: docker/Dockerfile.test
     container_name: test_integration
-    volumes:
-      - ./target:/application/target
     depends_on:
       - config-server
       - discovery-server
-    # command: mvn test
+    command: mvn test
 
   # test_unitaire_admin_server:
   #   build:

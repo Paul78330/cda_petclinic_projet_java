@@ -114,8 +114,6 @@
         </dependency>
     </dependencies>
 </dependencyManagement>
-
-
     <profiles>
         <profile>
             <id>springboot</id>
@@ -146,6 +144,7 @@
                             </execution>
                         </executions>
                     </plugin>
+                    
 
                     <!-- Spring Boot Actuator displays build-related information if a META-INF/build-info.properties file is present -->
                     <plugin>

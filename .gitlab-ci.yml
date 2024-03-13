@@ -52,15 +52,18 @@ maven_build_job:
   before_script:
   - apt-get update && apt-get install -y docker-compose
   script:
-    - docker build --progress=plain -t spring-petclinic-microservices -f docker/Dockerfile.test .
-    - docker run --name temp_container spring-petclinic-microservices echo "Container started"
-    - docker cp temp_container:/application/target/*.jar ./target/
-    - docker rm temp_container
+    - docker-compose up -d --build
+    - mvn clean install -DskipTests
   dependencies:
     - docker_build_job
   artifacts:
     paths:
-      - target/*.jar
+      - spring-petclinic-admin-server/target/*.jar
+      - spring-petclinic-customers-service/target/*.jar
+      - spring-petclinic-config-server/target/*.jar
+      - spring-petclinic-discovery-server/target/*.jar
+      - spring-petclinic-vets-server/target/*.jar
+      - spring-petclinic-visits-service/target/*.jar
 
 use_jar_files_job:
   stage: test
