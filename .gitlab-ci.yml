@@ -135,13 +135,10 @@ package_admin_server_job: # Nom du job
     - maven_build_job # Ce job dépend du job maven_build_job
   script:
     - 'echo "Building Docker image for admin server"'
-    - 'ls lah' # Liste le contenu du répertoire courant
-    - 'docker build --build-arg ARTIFACT_NAME=${ARTIFACT_NAME} -f docker/Dockerfile -t $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA .'  # Construit une image Docker en passant une variable de build au Dockerfile
-    - 'docker push $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA' # Pousse l'image Docker au registre
-  artifacts: # Artefacts à conserver après l'exécution du job
-    paths:
-      - target/*.jar # Fichiers .jar dans le répertoire target/
-  only: # Ce job ne s'exécute que pour les commits sur la branche main
+    - 'ls lah'
+    - 'docker build --build-arg ARTIFACT_NAME=${ARTIFACT_NAME} -f docker/Dockerfile -t $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA .'
+    - 'docker push $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA'
+  only:
     - main
       
 
