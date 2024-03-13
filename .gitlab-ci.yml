@@ -155,7 +155,7 @@ quality:
     - echo "Running quality checks..."
     - docker-compose up test_quality
   dependencies:
-    - package_job
+    - package_admin_server_job
     - maven_build_job
   only:
     - main
