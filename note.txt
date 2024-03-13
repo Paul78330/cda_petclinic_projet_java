@@ -1,0 +1,9 @@
+conteneur vs machine hôte
+
+Docker est une plateforme qui permet de créer, déployer et gérer des conteneurs. Un conteneur est une unité logicielle standardisée qui contient le code de l'application et toutes ses dépendances, de sorte que l'application peut être exécutée rapidement et de manière fiable d'un environnement informatique à un autre.
+
+Pour comprendre la différence entre un conteneur et une machine hôte, vous pouvez penser à un immeuble d'appartements. L'immeuble lui-même est comme la machine hôte - c'est l'infrastructure physique qui soutient tout. Chaque appartement dans l'immeuble est comme un conteneur - il a ses propres ressources (comme l'eau et l'électricité), et il est isolé des autres appartements. Vous pouvez faire ce que vous voulez dans votre appartement sans affecter les autres, tout comme vous pouvez exécuter différentes applications dans différents conteneurs sans qu'elles interfèrent entre elles.
+
+Dans le cas de GitLab, Docker est utilisé pour créer et gérer des conteneurs qui exécutent les jobs de votre pipeline CI/CD. Chaque job est exécuté dans son propre conteneur, ce qui signifie qu'il a son propre environnement isolé avec ses propres ressources. Cela permet d'assurer que les jobs sont exécutés de manière fiable et cohérente, indépendamment de l'environnement dans lequel ils sont exécutés.
+
+Dans votre fichier .gitlab-ci.yml, vous utilisez Docker pour construire une image Docker de votre application (docker build), exécuter cette image dans un conteneur (docker run), copier les fichiers de sortie de ce conteneur sur la machine hôte (docker cp), et enfin supprimer le conteneur (docker rm). Cela vous permet de construire et de tester votre application dans un environnement isolé, puis de récupérer les résultats pour une utilisation ultérieure.

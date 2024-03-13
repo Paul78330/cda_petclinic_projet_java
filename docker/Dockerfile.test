@@ -18,4 +18,4 @@ WORKDIR /application
 COPY . .
 
 #Construire l'application avec Maven, en sautant les tests
-RUN mvn clean install -DskipTests
+RUN mvn clean install
