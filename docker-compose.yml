@@ -179,3 +179,11 @@ services:
   #     - config-server
   #     - discovery-server
   #   command: mvn test
+
+  test_quality:
+    image: $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA #image docker correspondant à l'application
+    container_name: test_quality #nom du conteneur
+    depends_on: #les services dont dépend le conteneur
+    - config-server
+    - discovery-server
+    command: mvn verify -PbuildDocker #commande à exécuter

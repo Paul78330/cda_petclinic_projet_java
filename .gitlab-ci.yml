@@ -123,40 +123,43 @@ maven_build_job:
 #     - maven_build_job
 
 
-package_admin_server_job:
-  stage: package
-  image: $DOCKER_REGISTRY
+package_admin_server_job: # Nom du job
+  stage: package # Étape du pipeline à laquelle ce job appartient
+  image: $DOCKER_REGISTRY # Image Docker à utiliser pour ce job
   services:
-    - docker:dind
+    - docker:dind # Service Docker à utiliser pour ce job (docker dans docker)
   variables:
-    DOCKER_HOST: tcp://docker:2375
-    ARTIFACT_NAME: spring-petclinic-admin-server
+    DOCKER_HOST: tcp://docker:2375  # Variable d'environnement pour spécifier l'hôte Docker
+    ARTIFACT_NAME: spring-petclinic-admin-server # Variable d'environnement pour spécifier le nom de l'artefact
   dependencies:
-    - maven_build_job
+    - maven_build_job # Ce job dépend du job maven_build_job
   script:
     - 'echo "Building Docker image for admin server"'
-    - ls lah
-    - 'docker build --build-arg ARTIFACT_NAME=${ARTIFACT_NAME} -f docker/Dockerfile -t $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA .'
-    - 'docker push $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA'
-  only:
+    - 'ls lah' # Liste le contenu du répertoire courant
+    - 'docker build --build-arg ARTIFACT_NAME=${ARTIFACT_NAME} -f docker/Dockerfile -t $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA .'  # Construit une image Docker en passant une variable de build au Dockerfile
+    - 'docker push $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA' # Pousse l'image Docker au registre
+  artifacts: # Artefacts à conserver après l'exécution du job
+    paths:
+      - target/*.jar # Fichiers .jar dans le répertoire target/
+  only: # Ce job ne s'exécute que pour les commits sur la branche main
     - main
       
 
-
-quality:
-  stage: quality
-  image: $DOCKER_REGISTRY/demo_project:$CI_COMMIT_SHORT_SHA
+quality_job_admin_server:
+  stage: quality # Étape du pipeline à laquelle ce job appartient
+  image: $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA # Image Docker à utiliser pour ce job qui correspond à l'image construite dans le job package_admin_server_job
   services:
-    - docker:dind
+    - docker:dind # Service Docker à utiliser pour ce job (docker dans docker)
   variables:
-    DOCKER_HOST: tcp://docker:2375
+    DOCKER_HOST: tcp://docker:2375 # Variable d'environnement pour spécifier l'hôte Docker
   before_script:
-    - apt-get update && apt-get install -y docker-compose
+    - 'echo "Running quality checks for admin server"' # Affiche un message avant l'exécution du script
+    - apt-get update && apt-get install -y docker-compose # Installe docker-compose
   script:
-    - echo "Running quality checks..."
+    - echo "Running quality checks for admin server"
     - docker-compose up test_quality
   dependencies:
-    - package_admin_server_job
-    - maven_build_job
+    - package_admin_server_job # Ce job dépend du job package_admin_server_job
+    - maven_build_job # Ce job dépend du job maven_build_job
   only:
-    - main
+    - main # Ce job ne s'exécute que pour les commits sur la branche main
