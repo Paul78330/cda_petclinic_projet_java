@@ -53,7 +53,7 @@ maven_build_job:
   - apt-get update && apt-get install -y docker-compose
   script:
     - docker-compose up -d --build
-    - mvn clean install -DskipTests
+    - ./mvn clean install -DskipTests
   dependencies:
     - docker_build_job
   artifacts:
@@ -62,16 +62,9 @@ maven_build_job:
       - spring-petclinic-customers-service/target/*.jar
       - spring-petclinic-config-server/target/*.jar
       - spring-petclinic-discovery-server/target/*.jar
-      - spring-petclinic-vets-server/target/*.jar
+      - spring-petclinic-vets-service/target/*.jar
       - spring-petclinic-visits-service/target/*.jar
 
-use_jar_files_job:
-  stage: test
-  script:
-    - echo "Using jar files..."
-    - ls -l target/
-  dependencies:
-    - maven_build_job
 
 # test_build_job:
 #   stage: test
@@ -130,33 +123,20 @@ use_jar_files_job:
 #     - maven_build_job
 
 
-package_job:
-#Le stage package est généralement utilisé pour empaqueter le code source en un format distribuable. Par exemple, dans un projet Java, cela pourrait signifier la création d'un fichier JAR ou WAR. Dans un projet Node.js, cela pourrait signifier la création d'un paquet npm. Dans le contexte de votre fichier .gitlab-ci.yml, le stage package est utilisé pour construire une image Docker de votre application.
+package_admin_server_job:
   stage: package
   image: $DOCKER_REGISTRY
   services:
     - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375
-    ARTIFACT_NAME: spring-petclinic-microservices
+    ARTIFACT_NAME: spring-petclinic-admin-server
   dependencies:
     - maven_build_job
-  before_script:
-    - 'echo "Listing current directory contents"'
-    - 'ls -lah'
-  
   script:
-    - 'echo "Listing target directory contents"'
-    - 'ls -lah'
-    - 'echo "Checking if JAR file exists"'
-    - 'ls -lah ${ARTIFACT_NAME}.jar'
-    - 'echo "Bulding Docker image"'
-    - 'docker build --build-arg ARTIFACT_NAME=${ARTIFACT_NAME} -f docker/Dockerfile -t demo_petclinic_project:$CI_COMMIT_SHORT_SHA .'
-    # Dans votre cas, le code demo_project:$CI_COMMIT_SHORT_SHA . est utilisé pour construire une image Docker pour votre projet et la tagger avec le hash court du commit actuel. Cette image Docker peut ensuite être distribuée et déployée sur différents environnements.
-    - 'docker push $DOCKER_REGISTRY/demo_project:$CI_COMMIT_SHORT_SHA'
-  artifacts:
-    paths:
-      - target/*.jar
+    - 'echo "Building Docker image for admin server"'
+    - 'docker build --build-arg ARTIFACT_NAME=${ARTIFACT_NAME} -f docker/Dockerfile -t $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA .'
+    - 'docker push $DOCKER_REGISTRY/demo_petclinic_project_admin_server:$CI_COMMIT_SHORT_SHA'
   only:
     - main
       
