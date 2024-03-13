@@ -45,7 +45,7 @@ debug_job:
 
 maven_build_job:
   stage: build_maven
-  image: $DOCKER_REGISTRY
+  image: $DOCKER_REGISTRY:latest
   services:
     - docker:dind
   variables:
@@ -124,9 +124,9 @@ maven_build_job:
 #     - maven_build_job
 
 
-package_admin_server_job: # Nom du job
+package_job: # Nom du job
   stage: package # Étape du pipeline à laquelle ce job appartient
-  image: $DOCKER_REGISTRY # Image Docker à utiliser pour ce job
+  image: $DOCKER_REGISTRY:latest # Image Docker à utiliser pour ce job
   services:
     - docker:dind # Service Docker à utiliser pour ce job (docker dans docker)
   variables:
