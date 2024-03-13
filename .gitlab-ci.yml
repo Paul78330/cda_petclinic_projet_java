@@ -177,7 +177,7 @@ deploy_staging:
   environment:
     name: staging #Nom de l'environnement
   dependencies: # Dépendances du job
-    - quality
+    - quality_job_admin_server
     - docker_build_job
   only:
     - main
