@@ -52,7 +52,7 @@ maven_build_job:
   before_script:
   - apt-get update && apt-get install -y docker-compose
   script:
-    - docker build -t spring-petclinic-microservices -f ./docker/Dockerfile.test .
+    - docker build -t spring-petclinic-microservices -f docker/Dockerfile.test
     - docker run --name temp_container spring-petclinic-microservices
     - docker cp temp_container:/application/target/*.jar ./target/
     - docker rm temp_container
